@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd ">
+
+    <!--beans就是管理对象的容器 -->
+    <!--
+        在Spring容器中添加了一个User对象
+        属性：
+            class：对象的全路径 （除非配置别名包）
+            name : 起别名（通常使用对象首字母小写，默认） 允许同一个bean标签中重复、不允许多个bean之间配置重复
+                 名称配置多个 n1 , n2 , n3 , n2 .符号必须遵从XML文档的规范.
+            id : 表示唯一、通常容器中只会存在一个相同的对象时 ，使用。 推荐使用
+            scope : 对象模式、默认单例的 可以修改为多例
+            init-method : 配置对象的初始化执行方法
+            destroy-method ： 配置对象的销亡方法
+            factory-method : 静态工厂方法配置对象时使用
+
+    -->
+    <bean name="a1 , a1 , a2 " class="com.lovecoding.bean.User" scope="singleton"></bean>
+
+    <bean id="b1" class="com.lovecoding.bean.User"></bean>
+
+    <bean name="f_user" class="com.lovecoding.bean.UserFactory" factory-method="createUser"></bean>
+
+
+    <!--实例工厂配置对象-->
+    <bean name="userFactory" class="com.lovecoding.bean.UserFactory"></bean>
+    <bean name="ff_user" factory-bean="userFactory" factory-method="createUser2"></bean>
+</beans>

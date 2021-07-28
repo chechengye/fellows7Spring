@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd ">
+
+    <!--
+        字段与Set方式注入
+        <property> 属性  ：
+            name : 属性名称/setXX方法后面跟着的字符串首字母小写
+            value : 放字符串/8种基本数据类型
+            ref: 放的自定义/第三方的引用数据类型 (找寻的同一个配置文件中的id/name的bean元素)
+        构造方法的方式
+          <constructor-arg>
+              index : 表示的指定参数的位置
+              type : 指定参数的类型
+              表达式注入： 使用#{} 来获取配置文件容器中任何内容
+              复杂类型注入：
+                    list
+                    array
+                    map
+                    properties
+    -->
+    <bean name="person" class="com.lovecoding.bean.Person">
+        <property name="name" value="关羽"></property>
+        <property name="age" value="22"></property>
+        <property name="car" ref="car"></property>
+
+    </bean>
+
+    <bean id="car" class="com.lovecoding.bean.Car">
+        <constructor-arg name="name" value="路虎" index="0" type="java.lang.String"></constructor-arg>
+        <constructor-arg name="price" value="399"></constructor-arg>
+    </bean>
+
+    <bean name="person1" class="com.lovecoding.bean.Person">
+        <property name="name" value="#{person.name}"></property>
+        <property name="age" value="#{person.age}"></property>
+        <property name="car" ref="car"></property>
+    </bean>
+
+    <bean id="collectionDemo" class="com.lovecoding.bean.CollectionDemo">
+        <property name="list">
+            <list>
+                <value>张三</value>
+                <value>李思</value>
+                <value>王五</value>
+            </list>
+        </property>
+        <property name="arr">
+            <array>
+                <value>lily</value>
+                <value>lucy</value>
+            </array>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="111" value="a111"></entry>
+                <entry key-ref="car" value="汽车的key"></entry>
+                <entry key-ref="person" value-ref="car"></entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="jdbc.driverClass">jdbc:mysql:///数据库名</prop>
+                <prop key="user">root</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
