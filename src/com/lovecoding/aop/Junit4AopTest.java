@@ -12,9 +12,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Spring里面的测试注解应用
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:com/lovecoding/annotation/annotation.xml")
+@ContextConfiguration("classpath:com/lovecoding/aop/aop.xml")
 public class Junit4AopTest {
 
+    @Autowired
+    OrderService orderService;
 
     /**
      * 测试JDK动态代理
@@ -39,5 +41,11 @@ public class Junit4AopTest {
         proxyOrderService.updateOrderById(1);
         System.out.println("----------------------");
         System.out.println(proxyOrderService instanceof OrderServiceImpl);//继承式 - 父子关系 ，代理后的对象通过继承目标对象产生的
+    }
+
+    @Test
+    public void testFn2(){
+        orderService.addOrder();
+        //orderService.updateOrderById(1);
     }
 }
