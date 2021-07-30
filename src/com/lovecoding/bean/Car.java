@@ -1,5 +1,8 @@
 package com.lovecoding.bean;
 
+import org.springframework.stereotype.Component;
+
+@Component(value = "car2")
 public class Car {
 
     private String name;

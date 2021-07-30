@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd ">
+
+    <!--
+        component-scan中base-package属性 来决定于哪个目录下面可以应用注解
+        若想将bean目录下面的person扫描到其使用的注解，需要做以下修改：
+        1、component-scan base-package支持多个
+        2、扩大base-package的路径范围
+
+    -->
+    <context:component-scan base-package="com.lovecoding.annotation"/>
+    <context:component-scan base-package="com.lovecoding.bean"/>
+
+    <bean name="car1" class="com.lovecoding.bean.Car">
+        <property name="name" value="兰博基尼"></property>
+        <property name="color" value="红色"></property>
+    </bean>
+
+</beans>

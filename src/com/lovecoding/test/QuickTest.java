@@ -70,4 +70,12 @@ public class QuickTest {
 
         System.out.println(collectionDemo);
     }
+
+    @Test
+    public void testFn4(){
+        ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:com/lovecoding/annotation/annotation.xml");
+        Person person = (Person) ac.getBean("person1");
+
+        System.out.println(person);
+    }
 }
