@@ -44,7 +44,7 @@ public class Person {
 
     /*@Autowired
     @Qualifier(value = "car1")*/
-    @Resource(name = "car2")
+    @Resource(name = "car1")
     private Car car;
 
     public String getName() {

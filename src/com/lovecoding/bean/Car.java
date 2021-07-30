@@ -2,7 +2,7 @@ package com.lovecoding.bean;
 
 import org.springframework.stereotype.Component;
 
-@Component(value = "car2")
+@Component(value = "car")
 public class Car {
 
     private String name;
