@@ -39,13 +39,13 @@
     </bean>
 
     <!--配置事务的通知对象-->
-    <tx:advice id="txAdvice">
+   <!-- <tx:advice id="txAdvice">
         <tx:attributes>
             <tx:method name="transfer"/>
-            <!--
+            &lt;!&ndash;
                 isolation : 隔离级别  1 , 2 , 4 , 8
                 propagation : 传播行为 默认REQUIRED 我们也仅使用它 存在事务了则使用，不存在则创建
-            -->
+            &ndash;&gt;
             <tx:method name="get*" read-only="true" isolation="REPEATABLE_READ" propagation="REQUIRED"/>
             <tx:method name="find*" read-only="true"/>
             <tx:method name="update*"/>
@@ -56,9 +56,13 @@
         </tx:attributes>
     </tx:advice>
 
-    <!--使用aop将事务与业务类产生了关联-->
+     &lt;!&ndash;使用aop将事务与业务类产生了关联&ndash;&gt;
     <aop:config>
         <aop:pointcut id="pc" expression="execution(* com.lovecoding.tx.*Service.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>
-    </aop:config>
+    </aop:config>-->
+
+
+    <!--事务开启注解驱动-->
+    <tx:annotation-driven/>
 </beans>
