@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd ">
+
+    <context:component-scan base-package="com.lovecoding.tx"/>
+    <!--配置文件读取-->
+    <context:property-placeholder location="db.properties"/>
+    <!--
+        Spring表达式：
+            #{}  :  是设定值的、引用配置文件中存在的对象。
+            ${} :  是读取其它属性文件中的值的。
+    -->
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+    </bean>
+
+    <!--此时数据源与jdbc模板对象并没有产生关系 -  解决：需要配置关系 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+
+    <!--事务管理对象 - 与数据库产生关联 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--事务模板对象 - 真正操作事务的 -->
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"></property>
+    </bean>
+
+    <!--配置事务的通知对象-->
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <tx:method name="transfer"/>
+            <!--
+                isolation : 隔离级别  1 , 2 , 4 , 8
+                propagation : 传播行为 默认REQUIRED 我们也仅使用它 存在事务了则使用，不存在则创建
+            -->
+            <tx:method name="get*" read-only="true" isolation="REPEATABLE_READ" propagation="REQUIRED"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="update*"/>
+            <tx:method name="modify*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="add*"/>
+            <tx:method name="insert*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--使用aop将事务与业务类产生了关联-->
+    <aop:config>
+        <aop:pointcut id="pc" expression="execution(* com.lovecoding.tx.*Service.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>
+    </aop:config>
+</beans>
